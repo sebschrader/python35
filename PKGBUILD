@@ -10,12 +10,18 @@ pkgdesc="Next generation of the python high-level scripting language"
 arch=('i686' 'x86_64')
 license=('custom')
 url="https://www.python.org/"
-depends=('expat' 'bzip2' 'gdbm' 'openssl' 'libffi' 'zlib')
+depends=('expat' 'bzip2' 'gdbm' 'openssl' 'libffi' 'libnsl' 'libtirpc' 'zlib')
 makedepends=('tk' 'sqlite' 'valgrind')
 optdepends=('tk: for tkinter' 'sqlite')
 options=('!makeflags')
-source=(https://www.python.org/ftp/python/${pkgver}/Python-${pkgver}.tar.xz)
-sha256sums=('c24a37c63a67f53bdd09c5f287b5cff8e8b98f857bf348c577d454d3f74db049')
+source=(https://www.python.org/ftp/python/${pkgver}/Python-${pkgver}.tar.xz nis.patch)
+sha256sums=('c24a37c63a67f53bdd09c5f287b5cff8e8b98f857bf348c577d454d3f74db049' 'SKIP')
+
+prepare() {
+  cd "${srcdir}/Python-${pkgver}"
+
+  patch --forward --strip=1 < "../nis.patch"
+}
 
 build() {
   cd "${srcdir}/Python-${pkgver}"
